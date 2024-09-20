@@ -1,21 +1,21 @@
 {
-  "states": [
-    { "id": "idle", "label": "Idle", "next": ["loading"], "prev": null },
-    {
-      "id": "loading",
-      "label": "Loading",
-      "next": ["success", "error"],
-      "prev": ["idle"]
-    },
-    {
-      "id": "success",
-      "label": "Success",
-      "next": ["idle"],
-      "prev": ["loading"]
-    },
-    { "id": "error", "label": "Error", "next": ["idle"], "prev": ["loading"] }
-  ],
-  "currentState": {
-    "id": "idle"
+  "states": {
+    "items": [
+      { "id": "idle", "label": "Idle", "next": ["loading"] },
+      {
+        "id": "loading",
+        "label": "Loading",
+        "next": ["success", "error"],
+        "prev": ["idle"]
+      },
+      {
+        "id": "success",
+        "label": "Success",
+        "next": ["idle"],
+        "prev": ["loading"]
+      },
+      { "id": "error", "label": "Error", "next": ["idle"], "prev": ["loading"] }
+    ],
+    "curr_state": "idle"
   }
 }

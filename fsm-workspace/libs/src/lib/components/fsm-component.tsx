@@ -1,9 +1,23 @@
-import styles from './fsm-component.module.scss';
+import './fsm-component.css';
+import { statesService } from '../data-access/states-service';
+import { useEffect, useRef } from 'react';
 
 export const FsmComponent = () => {
-  return (
-    <div className={styles['container']}>
-      <h1>Welcome to FsmComponent!</h1>
-    </div>
-  );
+  const isFetched = useRef(false);
+
+  useEffect(() => {
+    if (!isFetched.current) {
+      try {
+        statesService.getStates().then((statesResponse) => {
+          console.log('statesResponse:', statesResponse);
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        isFetched.current = true;
+      }
+    }
+  }, []);
+
+  return <div>AAA</div>;
 };

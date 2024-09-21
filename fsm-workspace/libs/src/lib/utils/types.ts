@@ -19,7 +19,14 @@ export interface StateItem {
   prev?: StateId[];
 }
 
-export interface StateResponse {
-  items: StateItem[];
+export interface States {
+  idle: StateItem;
+  loading: StateItem;
+  success: StateItem;
+  error: StateItem;
+}
+
+export interface StatesResponse {
+  items: States;
   curr_state: StateId;
 }

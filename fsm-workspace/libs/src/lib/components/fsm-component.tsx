@@ -1,12 +1,12 @@
 import './fsm-component.css';
 import { statesService } from '../data-access/states-service';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { StateId, StateItem, StatesResponse, States } from '../utils/types';
+import { StateId, StateItem, States } from '../utils/types';
 import { getNextStates } from '../utils/functions/get-next-states';
 
 export const FsmComponent = () => {
   const isFetched = useRef(false);
-  const [data, setData] = useState<States | undefined>(undefined);
+  const [states, setStates] = useState<States | undefined>(undefined);
   const [currentState, setCurrentState] = useState<StateId | undefined>(
     undefined
   );
@@ -17,20 +17,36 @@ export const FsmComponent = () => {
     isFetched.current = true;
 
     try {
-      // TODO: turn on spinner
-      const response: StatesResponse = await statesService.getStates();
-      setData(response.items);
-      setCurrentState(response.curr_state);
-      const nextStatesList = getNextStates(response);
+      const statesData = await statesService.getStates();
+      const currState = await statesService.getCurrentState();
+
+      setStates(statesData);
+      setCurrentState(currState);
+
+      const nextStatesList = getNextStates({
+        items: statesData,
+        currState: currState,
+      });
       if (nextStatesList && nextStatesList.length) {
         setNextStates(nextStatesList);
       }
     } catch (error) {
       console.log(error); // TODO: add error handling
     } finally {
-      // TODO: turn off spinner
+      isFetched.current = false;
+      // TODO: Add spinner
     }
   }, []);
+
+  const handleStateClick = async (nextStateId: StateId) => {
+    try {
+      await statesService.updateCurrentState(nextStateId);
+      isFetched.current = false;
+      await getData();
+    } catch (error) {
+      console.log(error); // TODO: add error handling
+    }
+  };
 
   useEffect(() => {
     getData();
@@ -40,12 +56,13 @@ export const FsmComponent = () => {
     <div className="fsm-component-root">
       <div className="current-state">
         <h2>Current State</h2>
-        {currentState && (
+        {currentState ? (
           <div className={`state-box state-${currentState}`}>
             {currentState}
           </div>
+        ) : (
+          <div>Current state is not available</div>
         )}
-        {!currentState && <div>Current state is not available</div>}
       </div>
       <div className="next-states">
         <h3>Next Possible States</h3>
@@ -53,7 +70,11 @@ export const FsmComponent = () => {
           {nextStates && nextStates.length > 0 ? (
             nextStates.map((item) =>
               item && item.id ? (
-                <div key={item.id} className={`state-item state-${item.id}`}>
+                <div
+                  key={item.id}
+                  className={`state-item state-${item.id}`}
+                  onClick={() => handleStateClick(item.id)}
+                >
                   {item.label}
                 </div>
               ) : null

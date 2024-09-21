@@ -25,8 +25,3 @@ export interface States {
   success: StateItem;
   error: StateItem;
 }
-
-export interface StatesResponse {
-  items: States;
-  curr_state: StateId;
-}

@@ -1,15 +1,24 @@
-import { StateId, StatesResponse, StateItem } from '../types';
+import { StateId, StateItem, States } from '../types';
 
-export const getNextStates = (statesResponse: StatesResponse): StateItem[] => {
-  const { items, curr_state } = statesResponse;
+interface GetNextStatesProps {
+  items: States;
+  currState: StateId;
+}
 
-  const currentStateItem = items[curr_state];
+export const getNextStates = (props: GetNextStatesProps): StateItem[] => {
+  const { items, currState } = props;
+  const currentStateItem = items[currState];
   if (!currentStateItem) {
-    throw new Error(`Current state ${curr_state} not found in items.`);
+    throw new Error(`Current state ${currState} not found in items.`);
   }
-  const nextStates = currentStateItem.next.map(
-    (nextStateId: StateId) => items[nextStateId]
-  );
+
+  const nextStates = currentStateItem.next.map((nextStateId: StateId) => {
+    const nextStateItem = items[nextStateId];
+    if (!nextStateItem) {
+      throw new Error(`Next state ${nextStateId} not found in items.`);
+    }
+    return nextStateItem;
+  });
 
   return nextStates;
 };

@@ -119,7 +119,7 @@ export const FsmComponent = () => {
         </div>
       </div>
       <div className="content-right">
-        <h3>State Tree</h3>
+        <h2>State Tree</h2>
         {states && renderStateTree(states, currentState)}
       </div>
     </div>

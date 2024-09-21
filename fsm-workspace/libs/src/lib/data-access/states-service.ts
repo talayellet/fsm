@@ -27,8 +27,14 @@ export const statesService = {
   updateCurrentState: async (nextState: StateItem): Promise<void> => {
     const currentStateResponse = await fetch(Urls.CURRENT_STATE);
     const currentStateData = await currentStateResponse.json();
-    currentStateData.curr_state = nextState;
 
+    if (!currentStateData.curr_state.next.includes(nextState.id)) {
+      throw new Error(
+        `The ${nextState.id} state is not a valid next state from the current state (${currentStateData.curr_state.id})`
+      );
+    }
+
+    currentStateData.curr_state = nextState;
     const response = await fetch(Urls.CURRENT_STATE, {
       method: 'PUT',
       headers: {

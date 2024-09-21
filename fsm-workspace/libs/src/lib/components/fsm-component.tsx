@@ -6,15 +6,23 @@ import { getNextStates } from '../utils/functions/get-next-states';
 
 export const FsmComponent = () => {
   const isFetched = useRef(false);
+  const isFirstLoad = useRef(true);
   const [states, setStates] = useState<States | undefined>(undefined);
   const [currentState, setCurrentState] = useState<StateItem | undefined>(
     undefined
   );
   const [nextStates, setNextStates] = useState<StateItem[]>([]);
+  const [loading, setLoading] = useState(false); // Loading for current state updates
 
   const getData = useCallback(async () => {
     if (isFetched.current) return;
     isFetched.current = true;
+
+    if (isFirstLoad.current) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
 
     try {
       const statesData = await statesService.getStates();
@@ -35,17 +43,25 @@ export const FsmComponent = () => {
       console.log(error); // TODO: add error handling
     } finally {
       isFetched.current = false;
-      // TODO: Add spinner
+
+      if (isFirstLoad.current) {
+        isFirstLoad.current = false;
+      }
+
+      setLoading(false);
     }
   }, []);
 
   const handleStateClick = async (nextState: StateItem) => {
     try {
+      setLoading(true);
       await statesService.updateCurrentState(nextState);
       isFetched.current = false;
       await getData();
     } catch (error) {
       console.log(error); // TODO: add error handling
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +69,6 @@ export const FsmComponent = () => {
     getData();
   }, [getData]);
 
-  // TODO: move this to a separate component
   const renderStateTree = (
     states: States,
     currentState: StateItem | undefined
@@ -86,42 +101,55 @@ export const FsmComponent = () => {
 
   return (
     <div className="fsm-component-root">
-      <div className="content-left">
-        <div className="current-state">
-          <h2>Current State</h2>
-          {currentState ? (
-            <div className={`state-box state-${currentState.id}`}>
-              {currentState.label}
+      {isFirstLoad.current ? (
+        <div className="spinner-overlay">
+          <h1>Loading...</h1>
+          <div className="spinner" aria-label="Loading spinner"></div>
+        </div>
+      ) : (
+        <>
+          <div className="content-left">
+            <div className="current-state">
+              <h2>Current State</h2>
+              {loading ? (
+                <div className="current-state-spinner">
+                  <div className="spinner" aria-label="Loading spinner"></div>
+                </div>
+              ) : currentState ? (
+                <div className={`state-box state-${currentState.id}`}>
+                  {currentState.label}
+                </div>
+              ) : (
+                <div>Current state is not available</div>
+              )}
             </div>
-          ) : (
-            <div>Current state is not available</div>
-          )}
-        </div>
-        <div className="next-states">
-          <h3>Next Possible States</h3>
-          <div className="states-list">
-            {nextStates && nextStates.length > 0 ? (
-              nextStates.map((item) =>
-                item && item.id ? (
-                  <div
-                    key={item.id}
-                    className={`state-item state-${item.id}`}
-                    onClick={() => handleStateClick(item)}
-                  >
-                    {item.label}
-                  </div>
-                ) : null
-              )
-            ) : (
-              <div>No next states available</div>
-            )}
+            <div className="next-states">
+              <h3>Next Possible States</h3>
+              <div className="states-list">
+                {nextStates && nextStates.length > 0 ? (
+                  nextStates.map((item) =>
+                    item && item.id ? (
+                      <div
+                        key={item.id}
+                        className={`state-item state-${item.id}`}
+                        onClick={() => handleStateClick(item)}
+                      >
+                        {item.label}
+                      </div>
+                    ) : null
+                  )
+                ) : (
+                  <div>No next states available</div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="content-right">
-        <h2>State Tree</h2>
-        {states && renderStateTree(states, currentState)}
-      </div>
+          <div className="content-right">
+            <h2>State Tree</h2>
+            {states && renderStateTree(states, currentState)}
+          </div>
+        </>
+      )}
     </div>
   );
 };

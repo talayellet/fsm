@@ -7,4 +7,6 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../coverage/libs',
+  collectCoverage: true,
+  coverageReporters: ['text', 'text-summary'],
 };

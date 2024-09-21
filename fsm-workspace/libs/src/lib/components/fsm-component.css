@@ -4,7 +4,9 @@
   font-family: Arial, sans-serif;
   margin-top: 20px;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
+
 .content-left,
 .content-right {
   display: flex;
@@ -13,6 +15,8 @@
   width: calc(50% - 20px);
   border: 1px solid black;
   min-height: 300px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .current-state {
@@ -31,7 +35,7 @@
   width: 150px;
   text-align: center;
   margin: 10px 0;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .state-idle {
@@ -72,12 +76,13 @@
   font-weight: bold;
   text-align: center;
   width: 120px;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .state-item:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .state-item.state-idle {
@@ -98,4 +103,23 @@
 .state-item.state-error {
   background-color: #f44336;
   color: #fff;
+}
+
+@media (max-width: 768px) {
+  .content-left,
+  .content-right {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .state-box,
+  .state-item {
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .state-box {
+    width: auto;
+  }
 }

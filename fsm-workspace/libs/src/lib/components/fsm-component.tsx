@@ -1,6 +1,6 @@
 import './fsm-component.css';
 import { statesService } from '../data-access/states-service';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StateItem, States } from '../utils/types';
 import { getNextStates } from '../utils/functions/get-next-states';
 
@@ -14,17 +14,15 @@ export const FsmComponent = () => {
   const [nextStates, setNextStates] = useState<StateItem[]>([]);
   const [loading, setLoading] = useState(false); // Loading for current state updates
 
-  const getData = useCallback(async () => {
+  const getData = async () => {
     if (isFetched.current) return;
     isFetched.current = true;
 
-    if (isFirstLoad.current) {
-      setLoading(false);
-    } else {
-      setLoading(true);
-    }
-
     try {
+      if (isFirstLoad.current) {
+        setLoading(false);
+      }
+
       const statesData = await statesService.getStates();
       const currState = await statesService.getCurrentState();
 
@@ -39,27 +37,29 @@ export const FsmComponent = () => {
       if (nextStatesList && nextStatesList.length) {
         setNextStates(nextStatesList);
       }
+
+      isFirstLoad.current = false;
     } catch (error) {
-      console.log(error); // TODO: add error handling
+      console.error('Error fetching data: ', error); // Handle errors
     } finally {
       isFetched.current = false;
-
-      if (isFirstLoad.current) {
-        isFirstLoad.current = false;
-      }
-
-      setLoading(false);
     }
-  }, []);
+  };
 
   const handleStateClick = async (nextState: StateItem) => {
     try {
       setLoading(true);
       await statesService.updateCurrentState(nextState);
-      isFetched.current = false;
-      await getData();
+
+      setCurrentState(nextState);
+
+      const nextStatesList = getNextStates({
+        items: states!,
+        currState: nextState,
+      });
+      setNextStates(nextStatesList);
     } catch (error) {
-      console.log(error); // TODO: add error handling
+      console.error('Error updating state: ', error); // TODO: add error handling
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,7 @@ export const FsmComponent = () => {
 
   useEffect(() => {
     getData();
-  }, [getData]);
+  }, []);
 
   const renderStateTree = (
     states: States,

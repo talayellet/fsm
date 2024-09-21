@@ -1,7 +1,89 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.fsm-component-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin-top: 20px;
+}
+
+.current-state {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.state-box {
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  width: 150px;
+  text-align: center;
+  margin: 10px 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+.state-idle {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.state-loading {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.state-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.state-error {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.next-states {
+  text-align: center;
+}
+
+.states-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.state-item {
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 120px;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.state-item:hover {
+  transform: scale(1.1);
+}
+
+.state-item.state-idle {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.state-item.state-loading {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.state-item.state-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.state-item.state-error {
+  background-color: #f44336;
+  color: #fff;
+}

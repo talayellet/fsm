@@ -2,7 +2,7 @@
   "states": {
     "items": {
       "idle": { "id": "idle", "label": "Idle", "next": ["loading"] },
-      "Loading": {
+      "loading": {
         "id": "loading",
         "label": "Loading",
         "next": ["success", "error"],

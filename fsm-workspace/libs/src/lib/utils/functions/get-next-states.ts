@@ -7,8 +7,9 @@ export const getNextStates = (statesResponse: StatesResponse): StateItem[] => {
   if (!currentStateItem) {
     throw new Error(`Current state ${curr_state} not found in items.`);
   }
-
-  return currentStateItem.next.map(
+  const nextStates = currentStateItem.next.map(
     (nextStateId: StateId) => items[nextStateId]
   );
+
+  return nextStates;
 };

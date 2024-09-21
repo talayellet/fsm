@@ -12,16 +12,15 @@ export const FsmComponent = () => {
     undefined
   );
   const [nextStates, setNextStates] = useState<StateItem[]>([]);
-  const [loading, setLoading] = useState(false); // Loading for current state updates
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const getData = async () => {
     if (isFetched.current) return;
     isFetched.current = true;
 
     try {
-      if (isFirstLoad.current) {
-        setLoading(false);
-      }
+      setLoading(true);
 
       const statesData = await statesService.getStates();
       const currState = await statesService.getCurrentState();
@@ -39,10 +38,14 @@ export const FsmComponent = () => {
       }
 
       isFirstLoad.current = false;
+      setError(null);
     } catch (error) {
-      console.error('Error fetching data: ', error); // Handle errors
+      setError('Failed to load data. Please try again later.');
+      console.error('Error fetching data: ', error);
+      isFirstLoad.current = false;
     } finally {
       isFetched.current = false;
+      setLoading(false);
     }
   };
 
@@ -59,10 +62,16 @@ export const FsmComponent = () => {
       });
       setNextStates(nextStatesList);
     } catch (error) {
-      console.error('Error updating state: ', error); // TODO: add error handling
+      setError('Failed to update state. Please try again.');
+      console.error('Error updating state: ', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const dismissError = () => {
+    setError(null);
+    getData();
   };
 
   useEffect(() => {
@@ -101,7 +110,16 @@ export const FsmComponent = () => {
 
   return (
     <div className="fsm-component-root">
-      {isFirstLoad.current ? (
+      {error && (
+        <div className="error-banner">
+          <span>{error}</span>
+          <button className="close-btn" onClick={dismissError}>
+            &times;
+          </button>
+        </div>
+      )}
+
+      {isFirstLoad.current && !error ? (
         <div className="spinner-overlay">
           <h1>Loading...</h1>
           <div className="spinner" aria-label="Loading spinner"></div>
@@ -123,26 +141,29 @@ export const FsmComponent = () => {
                 <div>Current state is not available</div>
               )}
             </div>
-            <div className="next-states">
-              <h3>Next Possible States</h3>
-              <div className="states-list">
-                {nextStates && nextStates.length > 0 ? (
-                  nextStates.map((item) =>
-                    item && item.id ? (
-                      <div
-                        key={item.id}
-                        className={`state-item state-${item.id}`}
-                        onClick={() => handleStateClick(item)}
-                      >
-                        {item.label}
-                      </div>
-                    ) : null
-                  )
-                ) : (
-                  <div>No next states available</div>
-                )}
+
+            {!loading && (
+              <div className="next-states">
+                <h3>Next Possible States</h3>
+                <div className="states-list">
+                  {nextStates && nextStates.length > 0 ? (
+                    nextStates.map((item) =>
+                      item && item.id ? (
+                        <div
+                          key={item.id}
+                          className={`state-item state-${item.id}`}
+                          onClick={() => handleStateClick(item)}
+                        >
+                          {item.label}
+                        </div>
+                      ) : null
+                    )
+                  ) : (
+                    <div>No next states available</div>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="content-right">
             <h2>State Tree</h2>

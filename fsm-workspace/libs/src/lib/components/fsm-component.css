@@ -35,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px;
+  min-height: 200px;
 }
 
 /* Error banner styles */
@@ -44,7 +44,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #f44336; /* Red background for error */
+  background-color: #f44336;
   color: white;
   padding: 15px;
   text-align: center;
@@ -103,6 +103,7 @@ body {
   background-color: rgba(255, 255, 255, 0.7);
   padding: 10px;
   border-radius: 20px;
+  min-height: 350px;
 }
 
 .content-right h2 {

@@ -16,7 +16,6 @@ export interface StateItem {
   id: StateId;
   label: StateLabel;
   next: StateId[];
-  prev?: StateId[];
 }
 
 export interface States {

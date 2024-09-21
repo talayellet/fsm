@@ -8,23 +8,24 @@
     "loading": {
       "id": "loading",
       "label": "Loading",
-      "next": ["success", "error"],
-      "prev": ["idle"]
+      "next": ["success", "error"]
     },
     "success": {
       "id": "success",
       "label": "Success",
-      "next": ["idle"],
-      "prev": ["loading"]
+      "next": ["idle"]
     },
     "error": {
       "id": "error",
       "label": "Error",
-      "next": ["idle"],
-      "prev": ["loading"]
+      "next": ["idle"]
     }
   },
   "current_state": {
-    "curr_state": "idle"
+    "curr_state": {
+      "id": "idle",
+      "label": "Idle",
+      "next": ["loading"]
+    }
   }
 }

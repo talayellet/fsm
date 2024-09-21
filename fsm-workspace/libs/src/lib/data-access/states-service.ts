@@ -1,5 +1,5 @@
 import { Urls } from '../utils/constants';
-import { StateId, States } from '../utils/types';
+import { StateItem, States } from '../utils/types';
 
 export const statesService = {
   getStates: async (): Promise<States> => {
@@ -13,21 +13,21 @@ export const statesService = {
     return states;
   },
 
-  getCurrentState: async (): Promise<StateId> => {
+  getCurrentState: async (): Promise<StateItem> => {
     const response = await fetch(Urls.CURRENT_STATE);
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    const data: { curr_state: StateId } = await response.json();
+    const data: { curr_state: StateItem } = await response.json();
     return data.curr_state;
   },
 
-  updateCurrentState: async (nextStateId: StateId): Promise<void> => {
+  updateCurrentState: async (nextState: StateItem): Promise<void> => {
     const currentStateResponse = await fetch(Urls.CURRENT_STATE);
     const currentStateData = await currentStateResponse.json();
-    currentStateData.curr_state = nextStateId;
+    currentStateData.curr_state = nextState;
 
     const response = await fetch(Urls.CURRENT_STATE, {
       method: 'PUT',

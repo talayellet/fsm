@@ -53,21 +53,28 @@ export const FsmComponent = () => {
   }, [getData]);
 
   // TODO: move this to a separate component
-  const renderStateTree = (states: States) => {
+  const renderStateTree = (
+    states: States,
+    currentState: StateId | undefined
+  ) => {
     return (
-      <ul>
+      <ul className="state-tree">
         {Object.keys(states).map((stateKey) => {
           const key = stateKey as keyof States;
+          const isActive = currentState === states[key].id;
           return (
-            <li key={key}>
+            <li key={key} className={isActive ? 'active-state' : ''}>
               {states[key].label}
               {states[key].next.length > 0 && (
                 <ul>
-                  {states[key].next.map((nextState) => (
-                    <li key={nextState}>
-                      {states[nextState as keyof States].label}
-                    </li>
-                  ))}
+                  {states[key].next.map((nextState) => {
+                    const isNextActive = currentState === nextState;
+                    return (
+                      <li key={nextState}>
+                        {states[nextState as keyof States].label}
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </li>
@@ -113,7 +120,7 @@ export const FsmComponent = () => {
       </div>
       <div className="content-right">
         <h3>State Tree</h3>
-        {states && renderStateTree(states)}
+        {states && renderStateTree(states, currentState)}
       </div>
     </div>
   );

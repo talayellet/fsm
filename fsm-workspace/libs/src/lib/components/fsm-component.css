@@ -79,6 +79,9 @@
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
   box-sizing: border-box;
+  background-color: #f9f9f9;
+  color: #333;
+  border: 1px solid #ccc;
 }
 
 .state-item:hover {
@@ -105,6 +108,76 @@
   color: #fff;
 }
 
+.state-tree {
+  list-style: none;
+  padding-left: 20px;
+  position: relative;
+}
+
+.state-tree li {
+  position: relative;
+  padding: 10px 20px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.state-tree li:hover {
+  background-color: #e0e0e0;
+}
+
+.state-tree li::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 10px;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.state-tree li::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 1px;
+  height: 100%;
+  background-color: #ccc;
+}
+
+.state-tree li:first-child::after {
+  height: 50%;
+  top: 50%;
+}
+
+.state-tree li:last-child::after {
+  height: 50%;
+  bottom: 50%;
+}
+
+.state-tree ul {
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 1px solid #ccc;
+}
+
+.active-state {
+  background-color: #f44336;
+  color: #333;
+  font-weight: bold;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+li.active-state {
+  background-color: #e6f2ff;
+}
+
 @media (max-width: 768px) {
   .content-left,
   .content-right {
@@ -121,5 +194,9 @@
 
   .state-box {
     width: auto;
+  }
+
+  .state-tree {
+    padding-left: 10px;
   }
 }

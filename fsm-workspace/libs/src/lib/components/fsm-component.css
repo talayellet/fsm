@@ -1,14 +1,26 @@
 .fsm-component-root {
   display: flex;
-  flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
   margin-top: 20px;
+  justify-content: space-between;
+}
+.content-left,
+.content-right {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  width: calc(50% - 20px);
+  border: 1px solid black;
+  min-height: 300px;
 }
 
 .current-state {
   text-align: center;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .state-box {

@@ -52,37 +52,68 @@ export const FsmComponent = () => {
     getData();
   }, [getData]);
 
+  // TODO: move this to a separate component
+  const renderStateTree = (states: States) => {
+    return (
+      <ul>
+        {Object.keys(states).map((stateKey) => {
+          const key = stateKey as keyof States;
+          return (
+            <li key={key}>
+              {states[key].label}
+              {states[key].next.length > 0 && (
+                <ul>
+                  {states[key].next.map((nextState) => (
+                    <li key={nextState}>
+                      {states[nextState as keyof States].label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   return (
     <div className="fsm-component-root">
-      <div className="current-state">
-        <h2>Current State</h2>
-        {currentState ? (
-          <div className={`state-box state-${currentState}`}>
-            {currentState}
-          </div>
-        ) : (
-          <div>Current state is not available</div>
-        )}
-      </div>
-      <div className="next-states">
-        <h3>Next Possible States</h3>
-        <div className="states-list">
-          {nextStates && nextStates.length > 0 ? (
-            nextStates.map((item) =>
-              item && item.id ? (
-                <div
-                  key={item.id}
-                  className={`state-item state-${item.id}`}
-                  onClick={() => handleStateClick(item.id)}
-                >
-                  {item.label}
-                </div>
-              ) : null
-            )
+      <div className="content-left">
+        <div className="current-state">
+          <h2>Current State</h2>
+          {currentState ? (
+            <div className={`state-box state-${currentState}`}>
+              {currentState}
+            </div>
           ) : (
-            <div>No next states available</div>
+            <div>Current state is not available</div>
           )}
         </div>
+        <div className="next-states">
+          <h3>Next Possible States</h3>
+          <div className="states-list">
+            {nextStates && nextStates.length > 0 ? (
+              nextStates.map((item) =>
+                item && item.id ? (
+                  <div
+                    key={item.id}
+                    className={`state-item state-${item.id}`}
+                    onClick={() => handleStateClick(item.id)}
+                  >
+                    {item.label}
+                  </div>
+                ) : null
+              )
+            ) : (
+              <div>No next states available</div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="content-right">
+        <h3>State Tree</h3>
+        {states && renderStateTree(states)}
       </div>
     </div>
   );

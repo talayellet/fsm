@@ -1,6 +1,6 @@
 import './fsm-component.css';
 import { statesService } from '../data-access/states-service';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StateItem, States } from '../utils/types';
 import { getNextStates } from '../utils/functions/get-next-states';
 
@@ -15,7 +15,7 @@ export const FsmComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     if (isFetched.current) return;
     isFetched.current = true;
 
@@ -47,27 +47,30 @@ export const FsmComponent = () => {
       isFetched.current = false;
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleStateClick = async (nextState: StateItem) => {
-    try {
-      setLoading(true);
-      await statesService.updateCurrentState(nextState);
+  const handleStateClick = useCallback(
+    async (nextState: StateItem) => {
+      try {
+        setLoading(true);
+        await statesService.updateCurrentState(nextState);
 
-      setCurrentState(nextState);
+        setCurrentState(nextState);
 
-      const nextStatesList = getNextStates({
-        items: states!,
-        currState: nextState,
-      });
-      setNextStates(nextStatesList);
-    } catch (error) {
-      setError('Failed to update state. Please try again.');
-      console.error('Error updating state: ', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const nextStatesList = getNextStates({
+          items: states!,
+          currState: nextState,
+        });
+        setNextStates(nextStatesList);
+      } catch (error) {
+        setError('Failed to update state. Please try again.');
+        console.error('Error updating state: ', error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [states]
+  );
 
   const dismissError = () => {
     setError(null);

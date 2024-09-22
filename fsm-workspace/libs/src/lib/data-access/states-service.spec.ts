@@ -1,4 +1,3 @@
-// states-service.test.ts
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock';
 import { statesService } from './states-service';
 import { Urls } from '../utils/constants';
@@ -7,11 +6,11 @@ import {
   ERROR_CODE_2,
   ERROR_TEXT_1,
   ERROR_TEXT_2,
-  MOCK_CURRENT_STATE_1,
-  MOCK_CURRENT_STATE_2,
-  MOCK_CURRENT_STATE_3,
+  IDLE_STATE,
+  SUCCESS_STATE,
   MOCK_STATES,
   SUCCESS_CODE_1,
+  LOADING_STATE,
 } from '../utils/mocks';
 
 enableFetchMocks();
@@ -43,12 +42,10 @@ describe('statesService', () => {
 
   describe('getCurrentState', () => {
     it('should fetch the current state and return the data', async () => {
-      fetchMock.mockResponseOnce(
-        JSON.stringify({ curr_state: MOCK_CURRENT_STATE_1 })
-      );
+      fetchMock.mockResponseOnce(JSON.stringify({ curr_state: IDLE_STATE }));
 
       const result = await statesService.getCurrentState();
-      expect(result).toEqual(MOCK_CURRENT_STATE_1);
+      expect(result).toEqual(IDLE_STATE);
       expect(fetchMock).toHaveBeenCalledWith(Urls.CURRENT_STATE);
     });
 
@@ -68,46 +65,44 @@ describe('statesService', () => {
     it('should update the current state if the next state is valid', async () => {
       fetchMock.mockResponses(
         [
-          JSON.stringify({ curr_state: MOCK_CURRENT_STATE_1 }),
+          JSON.stringify({ curr_state: LOADING_STATE }),
           { status: SUCCESS_CODE_1 },
         ],
         ['', { status: SUCCESS_CODE_1 }]
       );
 
-      await statesService.updateCurrentState(MOCK_CURRENT_STATE_2);
+      await statesService.updateCurrentState(SUCCESS_STATE);
 
       expect(fetchMock).toHaveBeenCalledWith(Urls.CURRENT_STATE, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ curr_state: MOCK_CURRENT_STATE_2 }),
+        body: JSON.stringify({ curr_state: SUCCESS_STATE }),
       });
     });
 
     it('should throw an error if the next state is not valid', async () => {
-      fetchMock.mockResponseOnce(
-        JSON.stringify({ curr_state: MOCK_CURRENT_STATE_1 })
-      );
+      fetchMock.mockResponseOnce(JSON.stringify({ curr_state: IDLE_STATE }));
 
       await expect(
-        statesService.updateCurrentState(MOCK_CURRENT_STATE_3)
+        statesService.updateCurrentState(IDLE_STATE)
       ).rejects.toThrow(
-        `The ${MOCK_CURRENT_STATE_3.id} state is not a valid next state from the current state (${MOCK_CURRENT_STATE_1.id})`
+        `The ${IDLE_STATE.id} state is not a valid next state from the current state (${IDLE_STATE.id})`
       );
     });
 
     it('should throw an error if the PUT request fails', async () => {
       fetchMock.mockResponses(
         [
-          JSON.stringify({ curr_state: MOCK_CURRENT_STATE_1 }),
+          JSON.stringify({ curr_state: LOADING_STATE }),
           { status: SUCCESS_CODE_1 },
         ],
         ['', { status: ERROR_CODE_2, statusText: ERROR_TEXT_2 }]
       );
 
       await expect(
-        statesService.updateCurrentState(MOCK_CURRENT_STATE_2)
+        statesService.updateCurrentState(SUCCESS_STATE)
       ).rejects.toThrow(
         `Failed to update current state: ${ERROR_CODE_2} - ${ERROR_TEXT_2}`
       );

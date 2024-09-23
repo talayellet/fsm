@@ -1,0 +1,294 @@
+/* Full-page spinner overlay for initial load */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.current-state-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* Error banner styles */
+.error-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10000;
+}
+
+.error-banner .error-message {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.error-banner .close-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 0 10px;
+}
+
+.close-btn {
+  margin-right: 15px;
+}
+
+/* General page styles */
+body {
+  margin: 0;
+}
+
+.fsm-component-root {
+  display: flex;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-image: url('../assets/pattern-02.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  height: auto;
+  padding-top: 60px;
+}
+
+.content-left,
+.content-right {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px 0 20px;
+  width: calc(50% - 40px);
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 20px;
+  min-height: 350px;
+}
+
+.content-right h2 {
+  text-align: center;
+}
+
+.current-state {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.state-box {
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  width: 150px;
+  text-align: center;
+  margin: 10px 0;
+  transition: transform 0.2s ease-in-out;
+}
+
+.state-idle {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.state-loading {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.state-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.state-error {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.next-states {
+  text-align: center;
+}
+
+.states-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.state-item {
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 120px;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.state-item:hover {
+  transform: scale(1.05);
+}
+
+.state-item.state-idle {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.state-item.state-loading {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.state-item.state-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.state-item.state-error {
+  background-color: #f44336;
+  color: #fff;
+}
+
+/* State tree styles */
+.state-tree {
+  list-style: none;
+  padding-left: 20px;
+  position: relative;
+}
+
+.state-tree li {
+  position: relative;
+  padding: 10px 20px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.state-tree li:hover {
+  background-color: #e0e0e0;
+}
+
+.state-tree li::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 10px;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.state-tree li::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 1px;
+  height: 100%;
+  background-color: #ccc;
+}
+
+.state-tree li:first-child::after {
+  height: 50%;
+  top: 50%;
+}
+
+.state-tree li:last-child::after {
+  height: 50%;
+  bottom: 50%;
+}
+
+.state-tree ul {
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 1px solid #ccc;
+}
+
+.active-state {
+  background-color: #f44336;
+  color: #333;
+  font-weight: bold;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+li.active-state {
+  background-color: #e6f2ff;
+}
+
+@media (max-width: 768px) {
+  .content-left,
+  .content-right {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .state-box,
+  .state-item {
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .state-box {
+    width: auto;
+  }
+
+  .state-tree {
+    padding-left: 10px;
+  }
+}

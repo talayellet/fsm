@@ -1,0 +1,31 @@
+{
+  "states": {
+    "idle": {
+      "id": "idle",
+      "label": "Idle",
+      "next": ["loading"]
+    },
+    "loading": {
+      "id": "loading",
+      "label": "Loading",
+      "next": ["success", "error"]
+    },
+    "success": {
+      "id": "success",
+      "label": "Success",
+      "next": ["idle"]
+    },
+    "error": {
+      "id": "error",
+      "label": "Error",
+      "next": ["idle"]
+    }
+  },
+  "current_state": {
+    "curr_state": {
+      "id": "idle",
+      "label": "Idle",
+      "next": ["loading"]
+    }
+  }
+}

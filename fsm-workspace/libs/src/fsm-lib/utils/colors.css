@@ -1,0 +1,15 @@
+:root {
+  --primary-color: #3498db;
+  --error-color: #f44336;
+  --success-color: #4caf50;
+  --loading-color: #ffeb3b;
+  --light-bg-color: rgba(255, 255, 255, 0.7);
+  --dark-text-color: #333;
+  --light-text-color: #fff;
+  --border-color: #ccc;
+  --spinner-border-color: rgba(0, 0, 0, 0.1);
+  --idle-bg-color: #f0f0f0;
+  --hover-bg-color: #e0e0e0;
+  --state-item-bg-color: #f9f9f9;
+  --active-state-bg-color: #e6f2ff;
+}

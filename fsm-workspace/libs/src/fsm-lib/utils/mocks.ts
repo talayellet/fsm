@@ -18,11 +18,24 @@ export const IDLE_STATE: StateItem = {
   next: [StateId.LOADING],
 };
 
+export const ERROR_STATE: StateItem = {
+  id: StateId.ERROR,
+  label: StateLabel.ERROR,
+  next: [StateId.IDLE],
+};
+
+export const INVALID_STATE_ID = 'invalid-state';
+export const INVALID_STATE = {
+  id: INVALID_STATE_ID,
+  label: INVALID_STATE_ID,
+  next: [StateId.LOADING],
+};
+
 export const MOCK_STATES: States = {
   idle: IDLE_STATE,
   loading: LOADING_STATE,
   success: SUCCESS_STATE,
-  error: { id: StateId.ERROR, label: StateLabel.ERROR, next: [] },
+  error: ERROR_STATE,
 };
 
 export const SUCCESS_CODE_1 = 200;

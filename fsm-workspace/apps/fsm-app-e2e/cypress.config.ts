@@ -13,6 +13,7 @@ export default defineConfig({
       ciWebServerCommand: 'npx nx run fsm-app:serve-static',
       ciBaseUrl: 'http://localhost:4200',
     }),
+    specPattern: 'apps/fsm-app-e2e/src/e2e/app.cy.ts',
     baseUrl: 'http://localhost:4200',
   },
 });

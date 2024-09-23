@@ -3,40 +3,29 @@
     "idle": {
       "id": "idle",
       "label": "Idle",
-      "next": [
-        "loading"
-      ]
+      "next": ["loading"]
     },
     "loading": {
       "id": "loading",
       "label": "Loading",
-      "next": [
-        "success",
-        "error"
-      ]
+      "next": ["success", "error"]
     },
     "success": {
       "id": "success",
       "label": "Success",
-      "next": [
-        "idle"
-      ]
+      "next": ["idle"]
     },
     "error": {
       "id": "error",
       "label": "Error",
-      "next": [
-        "idle"
-      ]
+      "next": ["idle"]
     }
   },
   "current_state": {
     "curr_state": {
-      "id": "error",
-      "label": "Error",
-      "next": [
-        "idle"
-      ]
+      "id": "idle",
+      "label": "Idle",
+      "next": ["loading"]
     }
   }
 }

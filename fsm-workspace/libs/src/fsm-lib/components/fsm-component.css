@@ -1,3 +1,5 @@
+@import url('../utils/colors.css');
+
 /* Full-page spinner overlay for initial load */
 .spinner-overlay {
   position: fixed;
@@ -14,8 +16,8 @@
 }
 
 .spinner {
-  border: 8px solid rgba(0, 0, 0, 0.1);
-  border-top: 8px solid #3498db;
+  border: 8px solid var(--spinner-border-color);
+  border-top: 8px solid var(--primary-color);
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -44,8 +46,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #f44336;
-  color: white;
+  background-color: var(--error-color);
+  color: var(--light-text-color);
   padding: 15px;
   text-align: center;
   display: flex;
@@ -63,7 +65,7 @@
   cursor: pointer;
   background: none;
   border: none;
-  color: white;
+  color: var(--light-text-color);
   font-size: 20px;
   padding: 0 10px;
 }
@@ -100,7 +102,7 @@ body {
   width: calc(50% - 40px);
   overflow: hidden;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: var(--light-bg-color);
   padding: 10px;
   border-radius: 20px;
   min-height: 350px;
@@ -130,23 +132,23 @@ body {
 }
 
 .state-idle {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: var(--idle-bg-color);
+  color: var(--dark-text-color);
 }
 
 .state-loading {
-  background-color: #ffeb3b;
-  color: #333;
+  background-color: var(--loading-color);
+  color: var(--dark-text-color);
 }
 
 .state-success {
-  background-color: #4caf50;
-  color: #fff;
+  background-color: var(--success-color);
+  color: var(--light-text-color);
 }
 
 .state-error {
-  background-color: #f44336;
-  color: #fff;
+  background-color: var(--error-color);
+  color: var(--light-text-color);
 }
 
 .next-states {
@@ -170,33 +172,34 @@ body {
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
   box-sizing: border-box;
-  background-color: #f9f9f9;
-  color: #333;
-  border: 1px solid #ccc;
+  background-color: var(--state-item-bg-color);
+  color: var(--dark-text-color);
+  border: 1px solid var(--border-color);
 }
 
 .state-item:hover {
   transform: scale(1.05);
+  background-color: var(--hover-bg-color);
 }
 
 .state-item.state-idle {
-  background-color: #e0e0e0;
-  color: #333;
+  background-color: var(--idle-bg-color);
+  color: var(--dark-text-color);
 }
 
 .state-item.state-loading {
-  background-color: #ffeb3b;
-  color: #333;
+  background-color: var(--loading-color);
+  color: var(--dark-text-color);
 }
 
 .state-item.state-success {
-  background-color: #4caf50;
-  color: #fff;
+  background-color: var(--success-color);
+  color: var(--light-text-color);
 }
 
 .state-item.state-error {
-  background-color: #f44336;
-  color: #fff;
+  background-color: var(--error-color);
+  color: var(--light-text-color);
 }
 
 /* State tree styles */
@@ -210,15 +213,15 @@ body {
   position: relative;
   padding: 10px 20px;
   margin: 5px 0;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: var(--state-item-bg-color);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .state-tree li:hover {
-  background-color: #e0e0e0;
+  background-color: var(--hover-bg-color);
 }
 
 .state-tree li::before {
@@ -228,7 +231,7 @@ body {
   top: 50%;
   width: 10px;
   height: 1px;
-  background-color: #ccc;
+  background-color: var(--border-color);
 }
 
 .state-tree li::after {
@@ -238,7 +241,7 @@ body {
   left: -10px;
   width: 1px;
   height: 100%;
-  background-color: #ccc;
+  background-color: var(--border-color);
 }
 
 .state-tree li:first-child::after {
@@ -254,20 +257,20 @@ body {
 .state-tree ul {
   margin-left: 20px;
   padding-left: 20px;
-  border-left: 1px solid #ccc;
+  border-left: 1px solid var(--border-color);
 }
 
 .active-state {
-  background-color: #f44336;
-  color: #333;
+  background-color: var(--error-color);
+  color: var(--dark-text-color);
   font-weight: bold;
-  border: 2px solid #4caf50;
+  border: 2px solid var(--success-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 li.active-state {
-  background-color: #e6f2ff;
+  background-color: var(--active-state-bg-color);
 }
 
 @media (max-width: 768px) {

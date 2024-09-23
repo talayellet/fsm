@@ -40,8 +40,7 @@ export const FsmComponent = () => {
       isFirstLoad.current = false;
       setError(null);
     } catch (error) {
-      setError('Failed to load data. Please try again later.');
-      console.error('Error fetching data: ', error);
+      setError(`Failed to load data. Please try again later. Reason: ${error}`);
       isFirstLoad.current = false;
     } finally {
       isFetched.current = false;
@@ -63,8 +62,7 @@ export const FsmComponent = () => {
         });
         setNextStates(nextStatesList);
       } catch (error) {
-        setError('Failed to update state. Please try again.');
-        console.error('Error updating state: ', error);
+        setError(`Failed to update state. Please try again. Reason: ${error}`);
       } finally {
         setLoading(false);
       }
@@ -72,10 +70,12 @@ export const FsmComponent = () => {
     [states]
   );
 
-  const dismissError = () => {
-    setError(null);
-    getData();
-  };
+  const dismissError = useCallback(() => {
+    {
+      setError(null);
+      getData();
+    }
+  }, []);
 
   useEffect(() => {
     getData();

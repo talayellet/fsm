@@ -9,4 +9,10 @@ export default {
   coverageDirectory: '../coverage/libs',
   collectCoverage: true,
   coverageReporters: ['text', 'text-summary'],
+  coveragePathIgnorePatterns: [
+    'colors.css',
+    'constants.ts',
+    'mocks.ts',
+    'types.ts',
+  ],
 };

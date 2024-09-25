@@ -1,1 +1,1 @@
-export * from './fsm-lib/components/fsm-component';
+export * from './fsm-lib/components/fsm/fsm';
